@@ -14,6 +14,7 @@ import {
   Layers,
   PartyPopper,
   UserRoundSearch,
+  ArrowDown,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -45,6 +46,7 @@ export default function Home() {
   const [input, setInput] = useState('');
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [showArrow, setShowArrow] = useState(true);
 
   const goToChat = (query: string) =>
     router.push(`/chat?query=${encodeURIComponent(query)}`);
@@ -84,6 +86,13 @@ export default function Home() {
     linkMp4.as = 'video';
     linkMp4.href = '/final_memojis_ios.mp4';
     document.head.appendChild(linkMp4);
+
+    const onScroll = () => {
+      if (window.scrollY > 40) setShowArrow(false);
+      else setShowArrow(true);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
@@ -230,6 +239,14 @@ export default function Home() {
 
       <SidebarScrollspy />
       <FluidCursor />
+
+      {/* Animated down arrow for mobile */}
+      {showArrow && (
+        <div className="md:hidden absolute bottom-4 left-1/2 z-40 -translate-x-1/2 flex flex-col items-center pointer-events-none select-none">
+          <ArrowDown className="animate-bounce text-blue-500 opacity-80" size={36} />
+          <span className="text-xs text-neutral-500 mt-1">Scroll to see more</span>
+        </div>
+      )}
     </div>
   );
 }

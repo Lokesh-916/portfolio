@@ -51,7 +51,7 @@ export default function SidebarScrollspy() {
 
   return (
     <nav
-      className="fixed left-4 top-1/2 z-50 flex -translate-y-1/2 flex-col items-center gap-6 rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-md dark:bg-neutral-900/70"
+      className="hidden md:flex fixed left-4 top-1/2 z-50 -translate-y-1/2 flex-col items-center gap-6 rounded-2xl bg-white/70 p-4 shadow-lg backdrop-blur-md dark:bg-neutral-900/70"
       style={{ minHeight: '220px' }}
       aria-label="Section navigation"
     >
