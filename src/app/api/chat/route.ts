@@ -1,14 +1,9 @@
-import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
-import { SYSTEM_PROMPT } from './prompt';
-import { getContact } from './tools/getContact';
-import { getCrazy } from './tools/getCrazy';
-import { getInternship } from './tools/getIntership';
-import { getPresentation } from './tools/getPresentation';
-import { getProjects } from './tools/getProjects';
-import { getResume } from './tools/getResume';
-import { getSkills } from './tools/getSkills';
-import { getSports } from './tools/getSport';
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+interface Message {
+  role: string;
+  content: string;
+}
 
 export const maxDuration = 30;
 
@@ -29,32 +24,23 @@ function errorHandler(error: unknown) {
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-    console.log('[CHAT-API] Incoming messages:', messages);
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return new Response("Missing Gemini API key.", { status: 500 });
+    }
 
-    messages.unshift(SYSTEM_PROMPT);
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const tools = {
-      getProjects,
-      getPresentation,
-      getResume,
-      getContact,
-      getSkills,
-      getSports,
-      getCrazy,
-      getInternship,
-    };
+    // Convert your messages to a single prompt string
+    const prompt = (messages as Message[]).map((m: Message) => `${m.role}: ${m.content}`).join('\n');
 
-    const result = streamText({
-      model: openai('gpt-4o-mini'),
-      messages,
-      toolCallStreaming: true,
-      tools,
-      maxSteps: 2,
-    });
+    const result = await model.generateContent(prompt);
 
-    return result.toDataStreamResponse({
-      getErrorMessage: errorHandler,
-    });
+    // Extract the response text
+    const text = result.response.text();
+
+    return new Response(JSON.stringify({ text }), { status: 200 });
   } catch (err) {
     console.error('Global error:', err);
     const errorMessage = errorHandler(err);

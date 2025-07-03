@@ -13,10 +13,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Toukoum Portfolio",
+  title: "Lokesh's AI Portfolio",
   description: "Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience",
   keywords: [
-    "Toukoum", 
+    "Lokesh", 
     "Portfolio", 
     "Developer", 
     "AI", 
@@ -29,34 +29,29 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "Toukoum",
-      url: "https://toukoum.fr",
+      name: "Lokesh",
+      url: "https://lokesh.com",
     },
   ],
-  creator: "Toukoum",
+  creator: "Lokesh",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://toukoum.fr",
-    title: "Toukoum Portfolio",
+    url: "https://lokesh.com",
+    title: "Lokesh's AI Portfolio",
     description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    siteName: "Toukoum Portfolio",
+    siteName: "Lokesh's AI Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Toukoum Portfolio",
+    title: "Lokesh's AI Portfolio",
     description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
-    creator: "@toukoum",
+    creator: "@Lokesh",
   },
   icons: {
-    icon: [
-      {
-        url: "/favicon.svg",
-        sizes: "any",
-      }
-    ],
-    shortcut: "/favicon.svg?v=2",
-    apple: "/apple-touch-icon.svg?v=2",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 

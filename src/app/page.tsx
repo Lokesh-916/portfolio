@@ -3,6 +3,9 @@
 import FluidCursor from '@/components/FluidCursor';
 import { Button } from '@/components/ui/button';
 import WelcomeModal from '@/components/welcome-modal';
+import Experience from '@/components/Experience';
+import Education from '@/components/Education';
+import ProjectsShowcase from '@/components/ProjectsShowcase';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -16,13 +19,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import GitHubButton from 'react-github-btn';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import SidebarScrollspy from '@/components/SidebarScrollspy';
 
 /* ---------- quick-question data ---------- */
 const questions = {
   Me: 'Who are you? I want to know more about you.',
   Projects: 'What are your projects? What are you working on right now?',
   Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Fun: 'What’s the craziest thing you’ve ever done? What are your hobbies?',
+  Fun: "What's the craziest thing you've ever done? What are your hobbies?",
   Contact:
     'How can I contact you?',
 } as const;
@@ -82,42 +87,42 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
+    <div id="chat" className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
       {/* big blurred footer word */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
         <div
-          className="hidden bg-gradient-to-b from-neutral-500/10 to-neutral-500/0 bg-clip-text text-[10rem] leading-none font-black text-transparent select-none sm:block lg:text-[16rem]"
+          className="hidden bg-gradient-to-b from-neutral-500/30 to-neutral-500/0 bg-clip-text text-[10rem] leading-none font-black text-transparent select-none font-serif sm:block lg:text-[16rem]"
           style={{ marginBottom: '-2.5rem' }}
         >
-          Toukoum
+          Lokesh
         </div>
       </div>
 
-      {/* GitHub button */}
-      <div className="absolute top-6 right-8 z-20">
-        <GitHubButton
-          href="https://github.com/toukoum/portfolio"
-          data-color-scheme="no-preference: light; light: light; dark: light_high_contrast;"
-          data-size="large"
-          data-show-count="true"
-          aria-label="Star toukoum/portfolio on GitHub"
+      {/* Avatar in top left */}
+      <div className="fixed top-6 left-6 z-50">
+        <button
+          type="button"
+          aria-label="Scroll to top"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="focus:outline-none"
         >
-          Star
-        </GitHubButton>
+          <Avatar className="h-14 w-14 border-2 border-white shadow-lg dark:border-neutral-800">
+            <AvatarImage src="/dogpaw.png" alt="Dog Paw" className="object-cover" />
+            <AvatarFallback>LB</AvatarFallback>
+          </Avatar>
+        </button>
       </div>
 
-      <div className="absolute top-6 left-6 z-20">
-        <button
-          onClick={() => goToChat('Are you looking for an internship?')}
-          className="cursor-pointer relative flex items-center gap-2 rounded-full border bg-white/30 px-4 py-1.5 text-sm font-medium text-black shadow-md backdrop-blur-lg transition hover:bg-white/60 dark:border-white dark:text-white dark:hover:bg-neutral-800"
-        >
+      {/* Open To Work badge in top right */}
+      <div className="fixed top-6 right-8 z-50">
+        <div className="flex items-center gap-2 rounded-full border bg-white/30 px-4 py-1.5 text-sm font-medium text-black shadow-md backdrop-blur-lg transition hover:bg-white/60 dark:border-white dark:text-white dark:hover:bg-neutral-800">
           {/* Green pulse dot */}
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
           </span>
-          need an intern?
-        </button>
+          Open To Work
+        </div>
       </div>
 
       {/* header */}
@@ -132,22 +137,22 @@ export default function Home() {
         </div>
 
         <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
-          Hey, I'm Raphael 👋
+          Hey, I'm Lokie
         </h2>
         <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-          AI portfolio
+          Lokesh's AI Portfolio
         </h1>
       </motion.div>
 
-      {/* centre memoji */}
-      <div className="relative z-10 h-52 w-48 overflow-hidden sm:h-72 sm:w-72">
+      {/* centre infinity avatar */}
+      <div className="relative z-10 h-52 w-52 overflow-hidden rounded-full bg-white/60 shadow-lg sm:h-72 sm:w-72 flex items-center justify-center">
         <Image
-          src="/landing-memojis.png"
-          alt="Hero memoji"
-          width={2000}
-          height={2000}
+          src="/inf.png"
+          alt="Infinity"
+          width={400}
+          height={400}
           priority
-          className="translate-y-14 scale-[2] object-cover"
+          className="object-cover w-full h-full mix-blend-multiply opacity-80"
         />
       </div>
 
@@ -203,6 +208,27 @@ export default function Home() {
           ))}
         </div>
       </motion.div>
+
+      {/* Additional sections */}
+      <div id="experience" className="w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <Experience />
+        </div>
+      </div>
+
+      <div id="education" className="w-full bg-gradient-to-b from-neutral-50/50 to-transparent dark:from-neutral-900/50">
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <Education />
+        </div>
+      </div>
+
+      <div id="projects" className="w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <ProjectsShowcase />
+        </div>
+      </div>
+
+      <SidebarScrollspy />
       <FluidCursor />
     </div>
   );
