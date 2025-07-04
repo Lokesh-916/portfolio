@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 
 interface Message {
   role: string;
@@ -24,26 +24,25 @@ function errorHandler(error: unknown) {
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      return new Response("Missing Gemini API key.", { status: 500 });
+      return new Response("Missing Groq API key.", { status: 500 });
     }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    // Convert your messages to a single prompt string
-    const prompt = (messages as Message[]).map((m: Message) => `${m.role}: ${m.content}`).join('\n');
-
-    const result = await model.generateContent(prompt);
-
-    // Extract the response text
-    const text = result.response.text();
-
-    return new Response(JSON.stringify({ text }), { status: 200 });
-  } catch (err) {
-    console.error('Global error:', err);
-    const errorMessage = errorHandler(err);
-    return new Response(errorMessage, { status: 500 });
+    const groq = new Groq({ apiKey });
+    // messages should be an array of { role: 'user' | 'assistant' | 'system', content: string }
+    const completion = await groq.chat.completions.create({
+      model: "gemma2-9b-it",
+      messages,
+    });
+    const content = completion.choices?.[0]?.message?.content || "";
+    return new Response(JSON.stringify({ content }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({ error: error instanceof Error ? error.message : String(error) }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 }

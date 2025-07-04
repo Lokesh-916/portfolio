@@ -47,14 +47,14 @@ const Avatar = dynamic<AvatarProps>(
     Promise.resolve(({ hasActiveTool }: AvatarProps) => (
       <div
         className={`rounded-full overflow-hidden bg-white/60 shadow-lg flex items-center justify-center ${hasActiveTool ? 'h-20 w-20' : 'h-28 w-28'}`}
-      >
-        <img
+        >
+              <img
           src="/inf.png"
           alt="Infinity"
           className="h-full w-full object-cover mix-blend-multiply opacity-80"
           style={{ background: 'transparent' }}
         />
-      </div>
+          </div>
     )),
   { ssr: false }
 );
@@ -81,7 +81,7 @@ const Chat = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQuery = searchParams.get('query');
-  const [autoSubmitted, setAutoSubmitted] = useState(false);
+  const initialQuerySubmitted = useRef(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
   const [input, setInput] = useState('');
@@ -89,58 +89,59 @@ const Chat = () => {
 
   // Helper to send message to backend and update state
   const sendMessage = async (userMessage: string) => {
+    if (loadingSubmit) return;
     setLoadingSubmit(true);
     setIsTalking(true);
-    const userMsg: Message = {
+
+    // Create the new user message
+    const userMsg = {
       id: Date.now().toString() + Math.random().toString(36).slice(2),
-      role: 'user',
+      role: 'user' as 'user',
       content: userMessage,
     };
-    // Add user message to state and use the updated array for the backend call
-    let updatedMessages: Message[] = [];
-    setMessages((prev) => {
-      updatedMessages = [...prev, userMsg];
-      return updatedMessages;
-    });
-    // Wait for state to update, then send to backend
-    setTimeout(async () => {
+
+    // Compute the new messages array
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: newMessages.map(({ role, content }) => ({ role, content })),
+        }),
+      });
+      const text = await res.text();
+      let data;
       try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: updatedMessages }),
-        });
-        const text = await res.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          throw new Error(text); // Not JSON, throw as error
-        }
-        const aiMsg: Message = {
-          id: Date.now().toString() + Math.random().toString(36).slice(2),
-          role: 'assistant',
-          content: data.text,
-        };
-        setMessages((prev) => [...prev, aiMsg]);
-      } catch (err: any) {
-        toast.error('Error: ' + (err?.message || 'Unknown error'));
-      } finally {
-        setIsTalking(false);
-        setLoadingSubmit(false);
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(text);
       }
-    }, 0);
+      const aiMsg = {
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        role: 'assistant' as 'assistant',
+        content: data.content,
+      };
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (err: any) {
+      toast.error('Error: ' + (err?.message || 'Unknown error'));
+    } finally {
+      setIsTalking(false);
+      setLoadingSubmit(false);
+    }
   };
 
   // For initial query from URL
   useEffect(() => {
-    if (initialQuery && !autoSubmitted) {
-      setAutoSubmitted(true);
+    if (initialQuery && !initialQuerySubmitted.current) {
+      initialQuerySubmitted.current = true;
       setInput('');
       sendMessage(initialQuery);
       router.replace('/chat');
     }
-  }, [initialQuery, autoSubmitted, router]);
+  }, [initialQuery, router]);
 
   // Video control for talking state
   useEffect(() => {
