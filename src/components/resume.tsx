@@ -8,20 +8,20 @@ import Image from 'next/image';
 export function Resume() {
   // Resume details
   const resumeDetails = {
-    title: "Raphael's Resume",
-    description: 'Full Stack Developer • AI Specialist',
+    title: "Lokesh's Resume",
+    description: 'AI Agent Developer • Learning Machine Learning & Deep Learning by Building Projects',
     fileType: 'PDF',
-    lastUpdated: 'March 2025',
-    fileSize: '0.5 MB',
-    previewImageSrc: '/resume_giraud_preview.png',
-    downloadUrl: '/resume_giraud.pdf',
+    lastUpdated: 'May 2025',
+    fileSize: '0.2 MB',
+    previewImageSrc: '/resume_lokesh_preview.png',
+    downloadUrl: '/Lokesh_Resume.pdf',
   };
 
   const handleDownload = () => {
     // Create a link element
     const link = document.createElement('a');
     link.href = resumeDetails.downloadUrl;
-    link.download = resumeDetails.downloadUrl.split('/').pop() || 'resume.pdf';
+    link.download = resumeDetails.downloadUrl.split('/').pop() || 'lokesh_resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

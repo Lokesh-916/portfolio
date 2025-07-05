@@ -96,7 +96,7 @@ export default function WelcomeModal({ trigger }: WelcomeModalProps) {
                   </h3> */}
                   <p className="text-accent-foreground text-base leading-relaxed">
                   Hi, I'm Lokesh – an AI & Data Science enthusiast, and this portfolio isn't just static — it talks back!
-                  Meet my digital twin, an AI agent that guides you through my work and answers your questions in real-time!
+                  Meet my digital twin Lokie, an AI agent that guides you through my work and answers your questions in real-time!
                   </p>
                 </div>
 

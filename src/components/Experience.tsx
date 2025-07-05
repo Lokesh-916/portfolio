@@ -6,28 +6,20 @@ import { Briefcase, Calendar, MapPin } from 'lucide-react';
 export function Experience() {
   const experiences = [
     {
-      title: 'AI Research Intern',
-      company: 'LightOn AI',
-      location: 'Paris, France',
-      period: '2024 - Present',
-      description: 'Working on cutting-edge AI research and development, focusing on large language models and natural language processing.',
-      technologies: ['Python', 'PyTorch', 'Transformers', 'Machine Learning'],
-    },
-    {
-      title: 'Full Stack Developer',
-      company: 'Freelance',
+      title: 'Waiting for Approval',
+      company: 'TBA',
       location: 'Remote',
-      period: '2023 - Present',
-      description: 'Building web applications and AI-powered solutions for various clients, specializing in Next.js and AI integration.',
-      technologies: ['Next.js', 'TypeScript', 'OpenAI API', 'TailwindCSS'],
+      period: '2025',
+      description: 'Application submitted. Awaiting approval for the next exciting opportunity!',
+      technologies: ['Pending'],
     },
     {
-      title: 'Student Developer',
-      company: '42 Paris',
-      location: 'Paris, France',
-      period: '2022 - Present',
-      description: 'Learning software development through peer-to-peer learning and project-based curriculum.',
-      technologies: ['C', 'C++', 'Python', 'Web Development'],
+      title: 'AI Intern',
+      company: 'Samsung Innovation Campus',
+      location: 'Kurnool',
+      period: 'Dec 2024 - Mar 2025',
+      description: ' Participated in AI-focused training sessions covering fundamentals of machine learning and deep learning algorithms. Worked on a project to build a voice based speaker recognition model.',
+      technologies: ['Python', 'TensorFlow', 'Numpy', 'Pandas'],
     },
   ];
 

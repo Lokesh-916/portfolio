@@ -8,54 +8,23 @@ export function ProjectsShowcase() {
   const projects = [
     {
       title: 'Coming Soon',
-      description: "🚀 Cool projects are brewing! I'm working on some exciting new ideas that I can't wait to share with you. Stay tuned!",
-      image: '/ratepreview.png',
+      description: " Cool projects are brewing! I'm working on some exciting new ideas that I can't wait to share with you. Stay tuned!",
+      image: '/Coming-Soon.png',
       tech: ['In Progress', 'Innovation', 'Coming Soon'],
       year: '2025',
       links: [],
     },
     {
-      title: 'Synto',
-      description: 'AI-powered interface that transforms complex blockchain interactions into simple, natural language commands.',
-      image: '/syntopreview.png',
-      tech: ['Next.js', 'TypeScript', 'Web3.js', 'OpenAI API'],
-      year: '2025',
+      title: 'Voice-Based Speaker Recognition Model ',
+      description: 'Developed and trained deep learning models using Recurrent Neural Networks (RNN) with Long Short-Term Memory (LSTM) architectures to process sequential audio data. Engineered and extracted relevant speech features such as Mel-Frequency Cepstral Coefficients (MFCCs) to enhance model accuracy and performance. ',
+      image: '/proj-preview.jpeg',
+      tech: ['Python', 'TensorFlow', 'RNN', 'LSTM'],
+      year: 'Feb 2025',
       links: [
-        { name: 'Website', url: 'https://synto.fun', icon: ExternalLink },
-        { name: 'GitHub', url: 'https://github.com/toukoum/synto', icon: Github },
+        { name: 'GitHub', url: 'https://github.com/Lokesh-916/SIC-AI-Project', icon: Github },
       ],
     },
-    {
-      title: 'Rrate',
-      description: 'Fun website to compare your salary with the richest people in the world.',
-      image: '/ratepreview.png',
-      tech: ['HTML', 'CSS', 'JavaScript'],
-      year: '2024',
-      links: [
-        { name: 'Website', url: 'https://rrate.app', icon: ExternalLink },
-        { name: 'GitHub', url: 'https://github.com/toukoum/Rrate', icon: Github },
-      ],
-    },
-    {
-      title: 'Defai',
-      description: 'AI-powered chat interface that simplifies on-chain operations on the Avalanche blockchain.',
-      image: '/defaipreview.png',
-      tech: ['Next.js', 'TypeScript', 'Vercel AI SDK'],
-      year: '2025',
-      links: [
-        { name: 'GitHub', url: 'https://github.com/toukoum/DEFAI', icon: Github },
-      ],
-    },
-    {
-      title: 'Fitgear',
-      description: 'Virtual voice seller accessible by QR code to improve customer-seller ratio.',
-      image: '/fitgearpreview.png',
-      tech: ['Next.js', 'OpenAI API', 'Langchain'],
-      year: '2024',
-      links: [
-        { name: 'LinkedIn', url: 'https://linkedin.com', icon: ExternalLink },
-      ],
-    },
+    
   ];
 
   const containerVariants = {

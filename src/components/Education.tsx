@@ -6,22 +6,22 @@ import { GraduationCap, Calendar, MapPin, Award } from 'lucide-react';
 export function Education() {
   const education = [
     {
-      degree: 'Software Engineering',
-      school: '42 Paris',
-      location: 'Paris, France',
-      period: '2022 - Present',
+      degree: 'B.Tech in Artificial Intelligence and Data Science',
+      school: 'IIITDM Kurnool',
+      location: 'Kurnool, Andhra Pradesh',
+      period: '2023 - Present',
       description: 'Peer-to-peer learning program focused on software development, algorithms, and system administration.',
-      achievements: ['Core Curriculum', 'Peer Learning', 'Project-Based'],
-      gpa: 'N/A',
+      achievements: ['DSA', 'DBMS', 'AI/ML', 'Computer Networking', 'Compiler Design', 'Operating Systems', 'Probability and Statistics'],
+      gpa: '8.8/10',
     },
     {
-      degree: 'High School Diploma',
-      school: 'Lycée',
-      location: 'France',
-      period: '2019 - 2022',
+      degree: 'Higher Secondary Education (Class XII)  ',
+      school: 'Krishna Chaitanya Junior College',
+      location: 'Nellore, Andhra Pradesh',
+      period: '2021 - 2023',
       description: 'Completed high school education with focus on mathematics and sciences.',
-      achievements: ['Mathematics', 'Physics', 'Computer Science'],
-      gpa: 'N/A',
+      achievements: ['Mathematics', 'Physics', 'Chemistry'],
+      gpa: '96.5%',
     },
   ];
 
@@ -90,6 +90,11 @@ export function Education() {
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {edu.description}
                   </p>
+                  {edu.gpa && (
+                    <p className="text-sm font-semibold text-primary">
+                      Grade: {edu.gpa}
+                    </p>
+                  )}
                   
                   <div className="flex flex-wrap gap-2 pt-2">
                     {edu.achievements.map((achievement, achievementIndex) => (

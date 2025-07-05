@@ -13,7 +13,7 @@ export function Presentation() {
     // Add a newline character after the emoji
     description:
       "Hey \nI'm Lokesh. I’m into AI, data stuff, and building projects that actually do something. Not a pro yet, but I keep trying new ideas, learning, and levelling up with every build. Currently working on AI Agents.",
-    src: '/profil-raph.png',
+    src: '/pfp-lokesh-modified.png',
     fallbackSrc:
       'https://images.pexels.com/photos/19645810/pexels-photo-19645810.jpeg',
   };

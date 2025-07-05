@@ -14,38 +14,37 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Lokesh's AI Portfolio",
-  description: "Interactive portfolio with an AI-powered Memoji that answers questions about me, my skills, and my experience",
+  description: "Interactive portfolio with an AI-powered chatbot that answers questions about me, my skills, and my experience",
   keywords: [
     "Lokesh", 
     "Portfolio", 
     "Developer", 
     "AI", 
     "Interactive", 
-    "Memoji", 
-    "Web Development",
-    "Full Stack",
-    "Next.js",
-    "React"
+    "Agents", 
+    "Machine Learning",
+    "Data Science",
+    "Deep Learning",
   ],
   authors: [
     {
       name: "Lokesh",
-      url: "https://lokesh.com",
+      url: "https://www.linkedin.com/in/lokeshbabu-kolamala",
     },
   ],
   creator: "Lokesh",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://lokesh.com",
-    title: "Lokesh's AI Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
+    url: "https://www.linkedin.com/in/lokeshbabu-kolamala",
+    title: "Lokie -Lokesh's AI Portfolio",
+    description: "Interactive portfolio with an AI-powered chatbot that answers questions about me",
     siteName: "Lokesh's AI Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "Lokesh's AI Portfolio",
-    description: "Interactive portfolio with an AI-powered Memoji that answers questions about me",
+    description: "Interactive portfolio with an AI-powered chatbot that answers questions about me,my skills and experience",
     creator: "@Lokesh",
   },
   icons: {
