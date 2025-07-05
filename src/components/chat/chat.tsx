@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
+import { sendConversationEmailIfNeeded, resetEmailSentFlag } from '@/lib/chat-utils';
+import { callPortfolioFunction } from '@/lib/portfolio-functions';
 
 // Component imports
 import ChatBottombar from '@/components/chat/chat-bottombar';
@@ -73,7 +75,7 @@ const MOTION_CONFIG = {
 // Define Message type
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'function';
   content: string;
 }
 
@@ -97,6 +99,7 @@ function stripMarkdown(text: string): string {
 
 const Chat = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQuery = searchParams.get('query');
@@ -128,7 +131,9 @@ const Chat = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: newMessages.map(({ role, content }) => ({ role, content })),
+          messages: newMessages
+            .filter(({ role }) => role === 'user' || role === 'assistant')
+            .map(({ role, content }) => ({ role, content })),
         }),
       });
       const text = await res.text();
@@ -144,6 +149,21 @@ const Chat = () => {
         content: data.content,
       };
       setMessages((prev) => [...prev, aiMsg]);
+      
+      // Handle function triggers if any
+      if (data.functionToCall) {
+        const functionResult = callPortfolioFunction(data.functionToCall);
+        if (functionResult) {
+          setMessages(prev => [
+            ...prev,
+            {
+              id: Date.now().toString() + Math.random().toString(36).slice(2),
+              role: 'function',
+              content: functionResult.content,
+            }
+          ]);
+        }
+      }
     } catch (err: any) {
       toast.error('Error: ' + (err?.message || 'Unknown error'));
     } finally {
@@ -173,6 +193,28 @@ const Chat = () => {
     }
   }, [isTalking]);
 
+  // Page leave detection - send email when user leaves
+  useEffect(() => {
+    // Reset email flag when component mounts (new session)
+    resetEmailSentFlag();
+
+    const handleBeforeUnload = () => {
+      if (messages.length > 0) {
+        // Only send user/assistant messages to backend
+        const filteredMessages = messages.filter(m => m.role === 'user' || m.role === 'assistant') as { role: 'user' | 'assistant'; content: string; }[];
+        sendConversationEmailIfNeeded(filteredMessages);
+      }
+    };
+
+    // Add beforeunload listener
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [messages]);
+
   // Submit handler
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -193,6 +235,21 @@ const Chat = () => {
     if (videoRef.current) videoRef.current.pause();
   };
 
+  // Auto-scroll to bottom when new messages are added
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loadingSubmit]);
+
   // Memo for latest messages
   const latestUserMessage = messages.length > 0 ? [...messages].reverse().find((m) => m.role === 'user') : null;
   const currentAIMessage = messages.length > 0 ? [...messages].reverse().find((m) => m.role === 'assistant') : null;
@@ -201,8 +258,21 @@ const Chat = () => {
   // Calculate header height based on hasActiveTool
   const headerHeight = currentAIMessage ? 100 : 180;
 
+  // Handler for Go to Home (Education) button
+  const goToHomeEducation = () => {
+    router.push('/#education');
+  };
+
   return (
     <div className="relative h-screen overflow-hidden">
+      {/* Go to Home (Education) Button */}
+      <button
+        onClick={goToHomeEducation}
+        className="fixed top-6 left-1/2 z-50 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full shadow-lg transition-all"
+        style={{ minWidth: 180 }}
+      >
+        Go to Home (Education)
+      </button>
       <div className="absolute top-6 right-8 z-51 flex flex-col-reverse items-center justify-center gap-1 md:flex-row">
         <WelcomeModal
           trigger={
@@ -240,6 +310,7 @@ const Chat = () => {
       <div className="container mx-auto flex h-full max-w-3xl flex-col flex-grow min-h-0">
         {/* Scrollable Chat Content */}
         <div
+          ref={chatContainerRef}
           className="flex-1 min-h-0 overflow-y-auto px-2"
           style={{ paddingTop: `${headerHeight}px` }}
         >
@@ -256,10 +327,12 @@ const Chat = () => {
               <>
                 {messages.map((msg) => (
                   <div key={msg.id} className="pb-4">
-                    <ChatBubble variant={msg.role === 'user' ? 'sent' : 'received'}>
+                    <ChatBubble variant={msg.role === 'user' ? 'sent' : msg.role === 'function' ? 'received' : 'received'}>
                       <ChatBubbleMessage>
                         {msg.role === 'assistant' ? (
                           <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        ) : msg.role === 'function' ? (
+                          <div style={{ fontStyle: 'italic', color: '#2563eb' }}>{msg.content}</div>
                         ) : (
                           <div>{msg.content}</div>
                         )}

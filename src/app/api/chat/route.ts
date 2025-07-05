@@ -1,8 +1,15 @@
 import Groq from "groq-sdk";
+import { SYSTEM_PROMPT } from "./prompt";
+import { detectFunctionTrigger } from "@/lib/function-triggers";
 
 interface Message {
   role: string;
   content: string;
+}
+
+interface ChatResponse {
+  content: string;
+  functionToCall?: string;
 }
 
 export const maxDuration = 30;
@@ -28,14 +35,34 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return new Response("Missing Groq API key.", { status: 500 });
     }
+    
+    // Get the latest user message to check for function triggers
+    const latestUserMessage = messages
+      .filter((msg: Message) => msg.role === 'user')
+      .pop()?.content || '';
+    
+    // Detect if a function should be triggered
+    const functionToCall = detectFunctionTrigger(latestUserMessage);
+    
     const groq = new Groq({ apiKey });
+    
+    // Add system prompt to the beginning of messages
+    const messagesWithSystem = [SYSTEM_PROMPT, ...messages];
+    
     // messages should be an array of { role: 'user' | 'assistant' | 'system', content: string }
     const completion = await groq.chat.completions.create({
       model: "gemma2-9b-it",
-      messages,
+      messages: messagesWithSystem,
     });
     const content = completion.choices?.[0]?.message?.content || "";
-    return new Response(JSON.stringify({ content }), {
+    
+    // Return response with function trigger info
+    const response: ChatResponse = {
+      content,
+      ...(functionToCall && { functionToCall })
+    };
+    
+    return new Response(JSON.stringify(response), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

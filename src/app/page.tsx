@@ -219,19 +219,19 @@ export default function Home() {
       </motion.div>
 
       {/* Additional sections */}
-      <div id="experience" className="w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
+      <div id="experience" className="relative z-10 w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
         <div className="mx-auto max-w-7xl px-4 py-16">
           <Experience />
         </div>
       </div>
 
-      <div id="education" className="w-full bg-gradient-to-b from-neutral-50/50 to-transparent dark:from-neutral-900/50">
+      <div id="education" className="relative z-10 w-full bg-gradient-to-b from-neutral-50/50 to-transparent dark:from-neutral-900/50">
         <div className="mx-auto max-w-7xl px-4 py-16">
           <Education />
         </div>
       </div>
 
-      <div id="projects" className="w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
+      <div id="projects" className="relative z-10 w-full bg-gradient-to-b from-transparent to-neutral-50/50 dark:to-neutral-900/50">
         <div className="mx-auto max-w-7xl px-4 py-16">
           <ProjectsShowcase />
         </div>
