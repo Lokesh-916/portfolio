@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import ReactMarkdown from 'react-markdown';
 
 // Component imports
 import ChatBottombar from '@/components/chat/chat-bottombar';
@@ -74,6 +75,24 @@ interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+}
+
+function stripMarkdown(text: string): string {
+  // Remove bold/italic/strikethrough
+  let out = text.replace(/([*_~`])/g, '');
+  // Remove headings
+  out = out.replace(/^#+\s?/gm, '');
+  // Remove lists
+  out = out.replace(/^[-*+]\s+/gm, '');
+  // Remove links but keep text
+  out = out.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+  // Remove images
+  out = out.replace(/!\[([^\]]*)\]\([^\)]+\)/g, '$1');
+  // Remove blockquotes
+  out = out.replace(/^>\s?/gm, '');
+  // Remove code blocks
+  out = out.replace(/`{1,3}[^`]*`{1,3}/g, '');
+  return out;
 }
 
 const Chat = () => {
@@ -234,15 +253,28 @@ const Chat = () => {
                 <ChatLanding submitQuery={sendMessage} />
               </motion.div>
             ) : (
-              messages.map((msg) => (
-                <div key={msg.id} className="pb-4">
-                  <ChatBubble variant={msg.role === 'user' ? 'sent' : 'received'}>
-                    <ChatBubbleMessage>
-                      <div>{msg.content}</div>
-                    </ChatBubbleMessage>
-                  </ChatBubble>
-                </div>
-              ))
+              <>
+                {messages.map((msg) => (
+                  <div key={msg.id} className="pb-4">
+                    <ChatBubble variant={msg.role === 'user' ? 'sent' : 'received'}>
+                      <ChatBubbleMessage>
+                        {msg.role === 'assistant' ? (
+                          <ReactMarkdown>{msg.content}</ReactMarkdown>
+                        ) : (
+                          <div>{msg.content}</div>
+                        )}
+                      </ChatBubbleMessage>
+                    </ChatBubble>
+                  </div>
+                ))}
+                {loadingSubmit && (
+                  <div className="pb-4">
+                    <ChatBubble variant="received">
+                      <ChatBubbleMessage isLoading />
+                    </ChatBubble>
+                  </div>
+                )}
+              </>
             )}
           </AnimatePresence>
         </div>

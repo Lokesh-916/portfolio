@@ -7,15 +7,15 @@ import React from 'react';
 export function Presentation() {
   // Personal information
   const profile = {
-    name: 'Raphael Giraud',
-    age: '21 years old',
-    location: 'Paris, France',
+    name: 'Lokesh Babu Kolamala',
+    age: '19 years old',
+    location: 'Vijayawada, Andhra Pradesh, India',
     // Add a newline character after the emoji
     description:
-      "Hey 👋\nI'm Raph also known as Toukoum. I'm a developer specializing in AI at 42 Paris. I'm working at LightOn AI in Paris. I'm passionate about AI, tech, Entrepreneurship and SaaS tech.",
+      "Hey \nI'm Lokesh. I’m into AI, data stuff, and building projects that actually do something. Not a pro yet, but I keep trying new ideas, learning, and levelling up with every build. Currently working on AI Agents.",
     src: '/profil-raph.png',
     fallbackSrc:
-      'https://images.unsplash.com/photo-1610216705422-caa3fcb6d158?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3',
+      'https://images.pexels.com/photos/19645810/pexels-photo-19645810.jpeg',
   };
 
   // Animation variants for text elements

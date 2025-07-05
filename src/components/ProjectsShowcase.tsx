@@ -7,6 +7,14 @@ import Image from 'next/image';
 export function ProjectsShowcase() {
   const projects = [
     {
+      title: 'Coming Soon',
+      description: "🚀 Cool projects are brewing! I'm working on some exciting new ideas that I can't wait to share with you. Stay tuned!",
+      image: '/ratepreview.png',
+      tech: ['In Progress', 'Innovation', 'Coming Soon'],
+      year: '2025',
+      links: [],
+    },
+    {
       title: 'Synto',
       description: 'AI-powered interface that transforms complex blockchain interactions into simple, natural language commands.',
       image: '/syntopreview.png',

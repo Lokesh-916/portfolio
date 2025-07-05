@@ -7,6 +7,15 @@ import { url } from 'inspector';
 // Enhanced project content array with all projects
 const PROJECT_CONTENT = [
   {
+    title: 'Coming Soon',
+    description:
+      "🚀 Cool projects are brewing! I'm working on some exciting new ideas that I can't wait to share with you. Stay tuned for more innovative projects coming your way soon!",
+    techStack: ['In Progress', 'Innovation', 'Coming Soon'],
+    date: '2025',
+    links: [],
+    images: [],
+  },
+  {
     title: 'Synto',
     description:
       'Synto is an AI-powered interface that transforms complex blockchain interactions into simple, natural language commands. Whether you want to send tokens, stake assets, swap coins, or even create NFTs or liquidity pools, just tell Synto what to do — no manual wallet interactions, no technical jargon. One of my biggest projects yet',
@@ -439,6 +448,12 @@ const ProjectContent = ({ project }: { project: ProjectProps }) => {
 
 // Main data export with updated content
 export const data = [
+  {
+    category: 'Coming Soon',
+    title: 'Coming Soon',
+    src: '/ratepreview.png',
+    content: <ProjectContent project={{ title: 'Coming Soon' }} />,
+  },
   {
     category: 'Startup Project',
     title: 'Synto',
